@@ -35,6 +35,7 @@ form textarea {
 
 form textarea {
   min-height: 140px;
+  resize: vertical;
   padding: 16px 24px;
   line-height: 24px;
 }
