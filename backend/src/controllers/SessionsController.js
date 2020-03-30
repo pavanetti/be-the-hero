@@ -11,6 +11,6 @@ module.exports = {
 
     return ong
       ? response.json(ong)
-      : response.status(400).json({ error: "Nog ONG found with this ID" });
+      : response.status(400).json({ error: "No ONG found with this ID" });
   }
 };
