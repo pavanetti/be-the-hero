@@ -18,7 +18,7 @@ export default function Detail() {
       </View>
 
       <View style={styles.incident}>
-        <Text style={styles.incidentProperty}>ONG:</Text>
+        <Text style={[styles.incidentProperty, { marginTop: 0 }]}>ONG:</Text>
         <Text style={styles.incidentValue}>APAD</Text>
 
         <Text style={styles.incidentProperty}>Caso:</Text>
@@ -34,11 +34,11 @@ export default function Detail() {
         <Text style={styles.heroDescription}>Entre em contato:</Text>
 
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.actions} onPress={() => {}}>
+          <TouchableOpacity style={styles.action} onPress={() => {}}>
             <Text style={styles.actionText}>WhatsApp</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actions} onPress={() => {}}>
+          <TouchableOpacity style={styles.action} onPress={() => {}}>
             <Text style={styles.actionText}>E-mail</Text>
           </TouchableOpacity>
         </View>
