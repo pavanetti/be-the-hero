@@ -1,6 +1,6 @@
 import React from "react";
 import { Feather } from "@expo/vector-icons";
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import { FlatList, Image, Text, View, TouchableOpacity } from "react-native";
 
 import logo from "../../assets/logo.png";
 import styles from "./styles";
@@ -20,9 +20,13 @@ export default function Incidents() {
         Escolha um dos casos abaixo e salve o dia.
       </Text>
 
-      <View style={styles.incidentList}>
-        {[1, 2, 3, 4].map((index) => (
-          <View key={index} style={styles.incident}>
+      <FlatList
+        style={styles.incidentList}
+        data={[1, 2, 3]}
+        keyExtractor={(id) => String(id)}
+        showsVerticalScrollIndicator={false}
+        renderItem={() => (
+          <View style={styles.incident}>
             <Text style={styles.incidentProperty}>ONG:</Text>
             <Text style={styles.incidentValue}>APAD</Text>
 
@@ -37,8 +41,8 @@ export default function Incidents() {
               <Feather name="arrow-right" size={16} color="#e02041" />
             </TouchableOpacity>
           </View>
-        ))}
-      </View>
+        )}
+      />
     </View>
   );
 }
