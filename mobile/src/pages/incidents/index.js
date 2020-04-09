@@ -11,6 +11,9 @@ import styles from "./styles";
 export default function Incidents() {
   const [incidents, setIncidents] = useState([]);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation();
 
   function navigateToDetail(incident) {
@@ -18,14 +21,29 @@ export default function Incidents() {
   }
 
   async function loadIncidents() {
-    const response = await api.get("incidents");
-    setIncidents(response.data);
+    if (loading) return;
+    if (total > 0 && incidents.length >= total) return;
+
+    setLoading(true);
+
+    const response = await api.get(`incidents`, { params: { page } });
+    setIncidents([...incidents, ...response.data]);
     setTotal(response.headers["x-total-count"]);
+
+    setPage(page + 1);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadIncidents();
   }, []);
+
+  function formattedValue({ value }) {
+    return Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  }
 
   return (
     <View style={styles.container}>
@@ -46,6 +64,8 @@ export default function Incidents() {
         data={incidents}
         keyExtractor={(incident) => String(incident.id)}
         showsVerticalScrollIndicator={false}
+        onEndReached={loadIncidents}
+        onEndReachedThreshold={0.1}
         renderItem={({ item: incident }) => (
           <View style={styles.incident}>
             <Text style={styles.incidentProperty}>ONG:</Text>
@@ -55,12 +75,7 @@ export default function Incidents() {
             <Text style={styles.incidentValue}>{incident.title}</Text>
 
             <Text style={styles.incidentProperty}>Valor:</Text>
-            <Text style={styles.incidentValue}>
-              {Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(incident.value)}
-            </Text>
+            <Text style={styles.incidentValue}>{formattedValue(incident)}</Text>
 
             <TouchableOpacity
               style={styles.detailsButton}
