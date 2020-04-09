@@ -13,18 +13,22 @@ export default function Detail() {
   const navigation = useNavigation();
 
   const { incident } = route.params;
-  const message =
-    'Olá APAD, estou entrando em contato pois gostaria de ajudar no caso "Cadelinha atropelada" com o valor de R$ 120,00';
-  const phone = "5512996628467";
+  const formattedValue = Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(incident.value);
+  const message = `Olá APAD, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${formattedValue}`;
   function sendMail() {
     MailComposer.composeAsync({
-      subject: "Herói do caso: Cadelina atropelada",
-      recipients: ["adap@bethehero.org"],
+      subject: `Herói do caso: ${incident.title}`,
+      recipients: [incident.email],
       body: message,
     });
   }
   function sendWhatsapp() {
-    Linking.openURL(`whatsapp://send?phone=${phone}&text=${message}`);
+    Linking.openURL(
+      `whatsapp://send?phone=${incident.whatsapp}&text=${message}`
+    );
   }
 
   return (
@@ -46,12 +50,7 @@ export default function Detail() {
         <Text style={styles.incidentValue}>{incident.title}</Text>
 
         <Text style={styles.incidentProperty}>Valor:</Text>
-        <Text style={styles.incidentValue}>
-          {Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(incident.value)}
-        </Text>
+        <Text style={styles.incidentValue}>{formattedValue}</Text>
       </View>
 
       <View style={styles.contactBox}>
