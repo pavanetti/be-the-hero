@@ -6,6 +6,11 @@ describe("ONG", () => {
   beforeEach(() => {
     connection.migrate.latest();
   });
+
+  afterAll(async () => {
+    await connection.destroy();
+  });
+
   it("should be able to createa new ONG", async () => {
     const response = await request(app).post("/ongs").send({
       name: "BemTeVi",
